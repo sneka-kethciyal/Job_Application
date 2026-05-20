@@ -1,0 +1,243 @@
+/* login.css */
+
+:root {
+  --accent: #4356ff;
+
+  --bg-color: #f4f7ff;
+  --card-bg: #ffffff;
+
+  --text-color: #111827;
+  --text-muted: #6b7280;
+
+  --border: #dbe3f1;
+  --input-bg: #ffffff;
+
+  --button-text: #ffffff;
+
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   DARK THEME
+========================= */
+
+[data-theme='dark'] {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+
+  --text-color: #f8fafc;
+  --text-muted: #cbd5e1;
+
+  --border: #334155;
+  --input-bg: #0f172a;
+
+  --button-text: #ffffff;
+
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* =========================
+   PAGE
+========================= */
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: Arial, sans-serif;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: var(--bg-color);
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+
+.login-card,
+.form-card,
+.profile-card {
+  width: 100%;
+  max-width: 520px;
+  padding: 36px;
+  background: var(--card-bg);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  color: var(--text-color);
+}
+
+.login-card h1,
+.form-card h1,
+.profile-card h1 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.page-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+/* =========================
+   LOGIN SWITCH
+========================= */
+
+.method-switch {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.method {
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  padding: 14px;
+  font-weight: 700;
+  cursor: pointer;
+
+  background: var(--input-bg);
+  color: var(--text-color);
+
+  transition: 0.3s;
+}
+
+.method.active {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.form-group input {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+
+  background: var(--input-bg);
+  color: var(--text-color);
+
+  outline: none;
+  transition: 0.3s;
+}
+
+.form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-group input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(67, 86, 255, 0.2);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn,
+.btn.primary {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+
+  background: var(--accent);
+  color: var(--button-text);
+
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover,
+.btn.primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn:disabled,
+.btn.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================
+   ALERTS
+========================= */
+
+.alert {
+  padding: 12px 14px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.alert.success {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.alert.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.page-footer {
+  margin-top: 22px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 520px) {
+  .login-card,
+  .form-card,
+  .profile-card {
+    padding: 24px;
+  }
+}

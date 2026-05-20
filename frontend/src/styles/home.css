@@ -1,0 +1,519 @@
+/* =====================================================
+   HOME PAGE
+===================================================== */
+
+.home-page {
+  min-height: 100vh;
+  background: #f4f7fb;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* =====================================================
+   TOP BAR
+===================================================== */
+
+.top-bar {
+  min-height: 70px;
+  background: white;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 24px;
+
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+
+  position: relative;
+  z-index: 100;
+
+  box-sizing: border-box;
+}
+
+/* =====================================================
+   BRAND TITLE
+===================================================== */
+
+.brand-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1e293b;
+  margin: 0;
+}
+
+/* =====================================================
+   RIGHT SIDE ACTIONS
+===================================================== */
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.login-btn,
+.upload-btn,
+.logout-btn,
+.profile-btn,
+.admin-btn {
+  border: none;
+
+  padding: 12px 18px;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.3s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  white-space: nowrap;
+
+  min-height: 44px;
+}
+
+/* =====================================================
+   LOGIN BUTTON
+===================================================== */
+
+.login-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.login-btn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+/* =====================================================
+   UPLOAD BUTTON
+===================================================== */
+
+.upload-btn {
+  background: #16a34a;
+  color: white;
+}
+
+.upload-btn:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+}
+
+/* =====================================================
+   LOGOUT BUTTON
+===================================================== */
+
+.logout-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.logout-btn:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+}
+
+/* =====================================================
+   ADMIN BUTTON
+===================================================== */
+
+.admin-btn {
+  background: #111827;
+  color: white;
+}
+
+.admin-btn:hover {
+  background: #000;
+  transform: translateY(-2px);
+}
+
+/* =====================================================
+   PROFILE BUTTON
+===================================================== */
+
+.profile-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.profile-btn:hover {
+  background: #1d4ed8;
+}
+
+/* =====================================================
+   HOME CONTENT
+===================================================== */
+
+.home-content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 40px 20px;
+
+  gap: 20px;
+}
+
+/* =====================================================
+   MAIN TITLE
+===================================================== */
+
+.home-content h1 {
+  font-size: 42px;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* =====================================================
+   WELCOME TEXT
+===================================================== */
+
+.welcome-text {
+  font-size: 20px;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 700px;
+}
+
+/* =====================================================
+   PROFILE SECTION
+===================================================== */
+
+.profile-section {
+  position: relative;
+}
+
+/* =====================================================
+   PROFILE ICON
+===================================================== */
+
+.profile-icon {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 50%;
+
+  border: none;
+
+  background: #2563eb;
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.3s ease;
+}
+
+.profile-icon:hover {
+  background: #1d4ed8;
+  transform: scale(1.05);
+}
+
+/* =====================================================
+   PROFILE DROPDOWN
+===================================================== */
+
+.profile-dropdown {
+  position: absolute;
+
+  top: 58px;
+  right: 0;
+
+  width: 280px;
+
+  background: white;
+
+  border-radius: 14px;
+
+  padding: 20px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+
+  z-index: 999;
+}
+
+.profile-dropdown h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.profile-dropdown p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+/* =====================================================
+   TABLET RESPONSIVE
+===================================================== */
+
+@media (max-width: 992px) {
+
+  .top-bar {
+    padding: 14px 18px;
+  }
+
+  .brand-title {
+    font-size: 22px;
+  }
+
+  .home-content h1 {
+    font-size: 34px;
+  }
+
+  .welcome-text {
+    font-size: 18px;
+  }
+}
+
+/* =====================================================
+   MOBILE RESPONSIVE
+===================================================== */
+
+@media (max-width: 768px) {
+
+  .top-bar {
+
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 14px 12px;
+
+    gap: 10px;
+  }
+
+  .brand-title {
+
+    font-size: 18px;
+
+    flex: 1;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .top-bar-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+  }
+
+  .login-btn,
+  .upload-btn,
+  .logout-btn,
+  .admin-btn {
+
+    padding: 10px 12px;
+
+    font-size: 12px;
+
+    min-height: 40px;
+  }
+
+  .profile-icon {
+
+    width: 42px;
+    height: 42px;
+
+    font-size: 18px;
+  }
+
+  .home-content {
+
+    padding: 30px 16px;
+  }
+
+  .home-content h1 {
+
+    font-size: 28px;
+  }
+
+  .welcome-text {
+
+    font-size: 16px;
+  }
+
+  /* PROFILE STAYS TOP RIGHT */
+
+  .profile-dropdown {
+
+    right: 0;
+
+    top: 52px;
+
+    width: 250px;
+  }
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+  .top-bar {
+
+    padding: 12px 8px;
+  }
+
+  .brand-title {
+
+    font-size: 16px;
+  }
+
+  .top-bar-actions {
+
+    gap: 6px;
+  }
+
+  .login-btn,
+  .upload-btn,
+  .logout-btn,
+  .admin-btn {
+
+    padding: 8px 10px;
+
+    font-size: 11px;
+
+    border-radius: 8px;
+
+    min-height: 36px;
+  }
+
+  .profile-icon {
+
+    width: 38px;
+    height: 38px;
+
+    font-size: 16px;
+  }
+
+  .home-content {
+
+    padding: 24px 12px;
+  }
+
+  .home-content h1 {
+
+    font-size: 22px;
+  }
+
+  .welcome-text {
+
+    font-size: 14px;
+  }
+
+  .profile-dropdown {
+
+    width: 220px;
+
+    padding: 16px;
+
+    top: 48px;
+
+    right: 0;
+  }
+
+  .profile-dropdown h2 {
+
+    font-size: 18px;
+  }
+
+  .profile-dropdown p {
+
+    font-size: 13px;
+  }
+}
+
+/* =====================================================
+   EXTRA SMALL MOBILE
+===================================================== */
+
+@media (max-width: 360px) {
+
+  .brand-title {
+
+    font-size: 14px;
+  }
+
+  .login-btn,
+  .upload-btn,
+  .logout-btn,
+  .admin-btn {
+
+    font-size: 10px;
+
+    padding: 7px 8px;
+  }
+
+  .profile-icon {
+
+    width: 36px;
+    height: 36px;
+
+    font-size: 15px;
+  }
+
+  .home-content h1 {
+
+    font-size: 20px;
+  }
+
+  .welcome-text {
+
+    font-size: 13px;
+  }
+
+  .profile-dropdown {
+
+    width: 200px;
+  }
+}
+
+/* =====================================================
+   OVERFLOW FIX
+===================================================== */
+
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}

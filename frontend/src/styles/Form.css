@@ -1,0 +1,563 @@
+/* =========================================================
+   APPLICATION FORM CONTAINER
+========================================================= */
+
+.application-form-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+  animation: slideIn 0.5s ease;
+}
+
+.form-header h1 {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.form-header p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+/* =========================================================
+   FORM SECTION
+========================================================= */
+
+.form-section {
+  background: var(--bg-color);
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 28px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  transition: 0.3s ease;
+}
+
+.form-section:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.form-section-header {
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--primary-light);
+  padding-bottom: 12px;
+}
+
+.form-section-title {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.form-section-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.form-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.form-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.form-grid-1 {
+  grid-template-columns: 1fr;
+}
+
+.form-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* =========================================================
+   INPUTS
+========================================================= */
+
+input,
+textarea,
+select,
+.speech-input,
+.speech-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 16px;
+  box-sizing: border-box;
+  outline: none;
+  transition: 0.3s;
+  background: white;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.speech-input:focus,
+.speech-textarea:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   TEXTAREA + MIC SECTION
+========================================================= */
+
+.textarea-speech-input-container {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.speech-label {
+  display: block;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 20px;
+}
+
+/* MAIN WRAPPER */
+
+.textarea-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  width: 100%;
+  margin-bottom: 26px; /* IMPORTANT SPACE BELOW */
+}
+
+/* TEXTAREA */
+
+.speech-textarea {
+  flex: 1;
+  min-height: 180px;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  font-size: 17px;
+  line-height: 1.6;
+  background: white;
+}
+
+/* MIC BUTTON */
+
+.mic-button-textarea {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25);
+
+  transition: 0.25s ease;
+}
+
+.mic-button-textarea:hover {
+  transform: translateY(-2px) scale(1.05);
+}
+
+.mic-button-textarea.listening {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* =========================================================
+   RADIO / CHECKBOX
+========================================================= */
+
+.pg-question {
+  background: var(--bg-secondary);
+  padding: 18px;
+  border-radius: 14px;
+}
+
+.pg-label {
+  display: block;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.radio-group {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.radio-label input[type="radio"] {
+  width: 18px;
+  height: 18px;
+}
+
+/* =========================================================
+   REQUIRED
+========================================================= */
+
+.required-asterisk {
+  color: red;
+  margin-left: 3px;
+}
+
+/* =========================================================
+   ERRORS
+========================================================= */
+
+.field-error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  display: block;
+}
+
+.form-errors {
+  background: #fee2e2;
+  border-left: 4px solid #dc2626;
+  padding: 18px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.form-errors h3 {
+  margin-bottom: 10px;
+}
+
+.form-errors ul {
+  padding-left: 20px;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.btn-submit,
+.btn-logout {
+  flex: 1;
+  min-width: 180px;
+
+  border: none;
+  padding: 15px 24px;
+  border-radius: 12px;
+
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.btn-submit {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-submit:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+}
+
+.btn-submit.success {
+  background: #059669;
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-logout {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-logout:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: #dc2626;
+  color: white;
+  padding: 14px 18px;
+  border-radius: 12px;
+  z-index: 999;
+  animation: slideIn 0.3s ease;
+  max-width: 350px;
+}
+
+.toast.success {
+  background: #059669;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes slideIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 992px) {
+
+  .application-form-container {
+    padding: 24px 18px;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .form-header h1 {
+    font-size: 2.3rem;
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .application-form-container {
+    padding: 18px 12px;
+  }
+
+  .form-header h1 {
+    font-size: 1.9rem;
+  }
+
+  .form-section {
+    padding: 18px;
+  }
+
+  .form-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  /* TEXTAREA + MIC */
+
+  .textarea-wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 30px;
+  }
+
+  .speech-textarea {
+    width: 100%;
+    min-height: 170px;
+  }
+
+  .mic-button-textarea {
+    width: 62px;
+    height: 62px;
+    font-size: 22px;
+  }
+
+  /* RADIO */
+
+  .radio-group {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .radio-label {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    background: white;
+  }
+
+  /* BUTTONS */
+
+  .form-actions {
+    flex-direction: row;
+    gap: 14px;
+  }
+
+  .btn-submit,
+  .btn-logout {
+    flex: 1;
+    width: auto;
+    min-width: 0;
+  }
+
+  .toast {
+    left: 15px;
+    right: 15px;
+    max-width: none;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+  .application-form-container {
+    padding: 12px 8px;
+  }
+
+  .form-header h1 {
+    font-size: 1.55rem;
+  }
+
+  .form-header p {
+    font-size: 0.84rem;
+  }
+
+  .form-section {
+    padding: 14px;
+  }
+
+  .form-section-title {
+    font-size: 1.05rem;
+  }
+
+  .speech-label {
+    font-size: 1rem;
+    margin-bottom: 16px;
+  }
+
+  .speech-textarea {
+    min-height: 150px;
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  .mic-button-textarea {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  }
+
+  .btn-submit,
+  .btn-logout {
+    padding: 13px;
+    font-size: 0.94rem;
+  }
+
+  .toast {
+    font-size: 0.82rem;
+    padding: 12px;
+  }
+
+  .radio-label {
+    font-size: 14px;
+  }
+}
+
+/* =========================================================
+   OVERFLOW FIX
+========================================================= */
+
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+}

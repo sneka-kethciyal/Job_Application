@@ -18,6 +18,7 @@ function AdminDashboard() {
   const navigate = useNavigate()
 
   const [users, setUsers] = useState([])
+  const [previewResumeUrl, setPreviewResumeUrl] = useState(null)
   const [applications, setApplications] =
     useState([])
 
@@ -133,167 +134,71 @@ function AdminDashboard() {
     }
   }
 
-  // ======================================================
-  // VIEW RESUME
-  // ======================================================
+ // ======================================================
+// VIEW RESUME — use resume_path directly (it's the Cloudinary URL)
+// ======================================================
 
-  const viewResume = async (
-    resumePath
-  ) => {
+const viewResume = (resumeUrl) => {
 
-    try {
+  if (!resumeUrl) {
 
-      const token =
-        getToken()
+    alert('Resume not found')
 
-      const filename =
-        getFilename(resumePath)
-
-      const res = await fetch(
-
-        `http://127.0.0.1:5000/resume/${filename}`,
-
-        {
-          method: 'GET',
-
-          headers: {
-            Authorization:
-              `Bearer ${token}`
-          }
-        }
-      )
-
-      if (!res.ok) {
-
-        throw new Error(
-          'Failed to load resume'
-        )
-      }
-
-      const blob =
-        await res.blob()
-
-      const url =
-        window.URL.createObjectURL(blob)
-
-      window.open(url, '_blank')
-
-      setTimeout(() => {
-
-        URL.revokeObjectURL(url)
-
-      }, 10000)
-
-    } catch (err) {
-
-      console.error(err)
-
-      alert(
-        'Unable to open resume'
-      )
-    }
+    return
   }
 
-  // ======================================================
-  // PLAY / STOP AUDIO
-  // ======================================================
+  window.open(
+    resumeUrl,
+    '_blank'
+  )
+}
 
-  const playAudio = async (
-    audioPath,
-    appId
-  ) => {
+// ======================================================
+// PLAY / STOP AUDIO — use Cloudinary URL directly
+// ======================================================
 
-    try {
+const playAudio = async (audioPath, appId) => {
 
-      // STOP SAME AUDIO
+  try {
 
-      if (
-
-        audioRef.current &&
-
-        playingId === appId
-
-      ) {
-
-        audioRef.current.pause()
-
-        audioRef.current.currentTime = 0
-
-        audioRef.current = null
-
-        setPlayingId(null)
-
-        return
-      }
-
-      // STOP PREVIOUS AUDIO
-
-      if (audioRef.current) {
-
-        audioRef.current.pause()
-
-        audioRef.current.currentTime = 0
-      }
-
-      const token =
-        getToken()
-
-      const filename =
-        getFilename(audioPath)
-
-      const res = await fetch(
-
-        `http://127.0.0.1:5000/audio/${filename}`,
-
-        {
-          method: 'GET',
-
-          headers: {
-            Authorization:
-              `Bearer ${token}`
-          }
-        }
-      )
-
-      if (!res.ok) {
-
-        throw new Error(
-          'Audio fetch failed'
-        )
-      }
-
-      const blob =
-        await res.blob()
-
-      const url =
-        window.URL.createObjectURL(blob)
-
-      const audio =
-        new Audio(url)
-
-      audioRef.current = audio
-
-      setPlayingId(appId)
-
-      audio.play()
-
-      audio.onended = () => {
-
-        setPlayingId(null)
-
-        audioRef.current = null
-      }
-
-    } catch (err) {
-
-      console.error(err)
-
-      alert(
-        'Unable to play audio'
-      )
+    if (!audioPath) {
+      alert("No audio found")
+      return
     }
-  }
 
+    // STOP SAME AUDIO
+    if (audioRef.current && playingId === appId) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+      audioRef.current = null
+      setPlayingId(null)
+      return
+    }
+
+    // STOP PREVIOUS AUDIO
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
+
+    // audioPath IS already the Cloudinary URL — play directly
+    const audio = new Audio(audioPath)
+
+    audioRef.current = audio
+    setPlayingId(appId)
+
+    audio.play()
+
+    audio.onended = () => {
+      setPlayingId(null)
+      audioRef.current = null
+    }
+
+  } catch (err) {
+    console.error(err)
+    alert("Unable to play audio")
+  }
+}
   // ======================================================
   // LOGOUT
   // ======================================================
@@ -577,57 +482,39 @@ function AdminDashboard() {
 
                     <td>
 
-                      {app.resume_path ? (
+  {app.resume_path ? (
 
-                        <button
-                          className="view-btn"
-                          onClick={() =>
-                            viewResume(
-                              app.resume_path
-                            )
-                          }
-                        >
+    <a
+      href={app.resume_path}
+      target="_blank"
+      rel="noreferrer"
+      className="view-btn"
+    >
 
-                          View Resume
+      📄 View Resume
 
-                        </button>
+    </a>
 
-                      ) : (
+  ) : (
 
-                        'No Resume'
-                      )}
+    'No Resume'
+  )}
 
-                    </td>
+</td>
 
                     {/* AUDIO */}
 
                     <td>
-
                       {aboutAudio ? (
-
                         <button
                           className="mic-btn"
-                          onClick={() =>
-                            playAudio(
-                              aboutAudio,
-                              app.id
-                            )
-                          }
+                          onClick={() => playAudio(aboutAudio, app.id)}
                         >
-
-                          {
-                            playingId === app.id
-                              ? '⏹️'
-                              : '🎤'
-                          }
-
+                          {playingId === app.id ? '⏹️' : '🎤'}
                         </button>
-
                       ) : (
-
                         'No Audio'
                       )}
-
                     </td>
 
                   </tr>
@@ -730,6 +617,52 @@ function AdminDashboard() {
         </div>
 
       </div>
+
+      {/* ================================================= */}
+      {/* PDF MODAL PREVIEW */}
+      {/* ================================================= */}
+
+      {previewResumeUrl && (
+        <div className="pdf-modal-overlay" onClick={() => setPreviewResumeUrl(null)}>
+          <div className="pdf-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="pdf-modal-header">
+              <h3>Resume Preview</h3>
+              <div className="pdf-modal-actions">
+                <button 
+                  className="form-btn modal-btn" 
+                  onClick={() => window.open(previewResumeUrl, '_blank')}
+                >
+                  Open in New Tab
+                </button>
+                <button 
+                  className="logout-btn modal-btn" 
+                  onClick={() => setPreviewResumeUrl(null)}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+            <div className="pdf-modal-body">
+              <div className="pdf-modal-fallback">
+                <p>If the PDF preview does not load automatically, click the button below to open it.</p>
+                <button 
+                  className="form-btn modal-btn" 
+                  onClick={() => window.open(previewResumeUrl, '_blank')}
+                >
+                  Open in New Tab
+                </button>
+              </div>
+              <iframe 
+                src={`https://docs.google.com/viewer?url=${encodeURIComponent(previewResumeUrl)}&embedded=true`} 
+                title="Resume PDF Preview" 
+                width="100%" 
+                height="100%"
+                style={{ border: 'none', position: 'relative', zIndex: 2 }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   )

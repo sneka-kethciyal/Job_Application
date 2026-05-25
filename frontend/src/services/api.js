@@ -5,7 +5,7 @@ import axios from 'axios'
 // ======================================================
 
 const BASE_URL =
-  'http://127.0.0.1:5000'
+ 'http://localhost:5000'
 
 // ======================================================
 // AXIOS INSTANCE
@@ -232,31 +232,28 @@ export const getApplications =
     return res.data
   }
 
+  // GET MY APPLICATIONS
+// USER SAFE API
+
+export const getMyApplications =
+  async () => {
+
+    const res = await api.get(
+      '/my-applications'
+    )
+
+    return res.data
+  }
+
 // ======================================================
 // RESUME APIs
 // ======================================================
 
 // ADMIN ONLY
 
-export const getResumeUrl =
-  (filename) => {
-
-    return (
-      `${BASE_URL}/resume/${filename}`
-    )
-  }
-
 // ======================================================
 // AUDIO APIs
 // ======================================================
-
-export const getAudioUrl =
-  (filename) => {
-
-    return (
-      `${BASE_URL}/audio/${filename}`
-    )
-  }
 
 // ======================================================
 // ROLE HELPERS

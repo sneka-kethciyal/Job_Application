@@ -9,8 +9,7 @@ from flask import (
 
     Flask,
     request,
-    jsonify,
-    send_from_directory
+    jsonify
 )
 
 from flask_cors import CORS
@@ -32,14 +31,13 @@ from firebase_admin import (
 )
 
 # =========================================================
-# CONFIG
+# CLOUDINARY
 # =========================================================
 
-from config import (
+import cloudinary
+import cloudinary.uploader
 
-    AUDIO_FOLDER,
-    RESUME_FOLDER
-)
+from cloudinary_config import *
 
 # =========================================================
 # AUTH
@@ -96,49 +94,20 @@ except Exception as e:
 app.register_blueprint(auth_bp)
 
 # =========================================================
-# SAVE FILE HELPER
+# CLOUDINARY FILE UPLOAD
 # =========================================================
 
-def save_file(
-
-    file_obj,
-    folder,
-    filename_override=None
-):
-
-    if file_obj is None:
-
+def upload_to_cloudinary(file_obj, folder_name, resource_type="auto"):
+    if not file_obj:
         return None
 
-    filename = (
-
-        filename_override or
-        secure_filename(
-            file_obj.filename
-        )
+    result = cloudinary.uploader.upload(
+        file_obj,
+        folder=folder_name,
+        resource_type=resource_type
     )
 
-    if not filename:
-
-        return None
-
-    os.makedirs(
-        folder,
-        exist_ok=True
-    )
-
-    path = os.path.join(
-        folder,
-        filename
-    )
-
-    file_obj.save(path)
-
-    return path.replace(
-        "\\",
-        "/"
-    )
-
+    return result.get("secure_url")
 # =========================================================
 # FIELD FORMAT
 # =========================================================
@@ -177,6 +146,9 @@ def root():
         "database":
             "Firebase Firestore",
 
+        "storage":
+            "Cloudinary",
+
         "security":
             "JWT + RBAC Enabled"
     })
@@ -194,6 +166,9 @@ def health():
             "ok",
 
         "firebase":
+            "connected",
+
+        "cloudinary":
             "connected"
     })
 
@@ -206,8 +181,10 @@ def health():
     "/users",
     methods=["GET"]
 )
+
 @token_required
 @admin_required
+
 def get_users():
 
     try:
@@ -223,8 +200,6 @@ def get_users():
             data = doc.to_dict()
 
             data["id"] = doc.id
-
-            # REMOVE PASSWORD
 
             data.pop(
                 "password",
@@ -268,8 +243,10 @@ def get_users():
     "/users/<user_id>",
     methods=["GET"]
 )
+
 @token_required
 @admin_required
+
 def get_single_user(user_id):
 
     try:
@@ -322,17 +299,21 @@ def get_single_user(user_id):
                 str(e)
         }), 500
 
+# =========================================================
+# SUBMIT APPLICATION
+# =========================================================
 
 # =========================================================
 # SUBMIT APPLICATION
-# USER LOGIN REQUIRED
 # =========================================================
 
 @app.route(
     "/submit-application",
     methods=["POST"]
 )
+
 @token_required
+
 def submit_application():
 
     try:
@@ -402,19 +383,6 @@ def submit_application():
         )
 
         # =====================================================
-        # TIMESTAMP
-        # =====================================================
-
-        timestamp = str(
-
-            int(
-                datetime.now(
-                    timezone.utc
-                ).timestamp()
-            )
-        )
-
-        # =====================================================
         # AUDIO HELPER
         # =====================================================
 
@@ -428,15 +396,13 @@ def submit_application():
 
                 return None
 
-            filename = secure_filename(f"{field_name}_audio.webm")
-
-            return save_file(
+            return upload_to_cloudinary(
 
                 file_obj,
 
-                AUDIO_FOLDER,
+                "job_application/audio",
 
-                filename
+                resource_type="auto"
             )
 
         # =====================================================
@@ -520,25 +486,18 @@ def submit_application():
 
         ):
 
-            filename = (
-
-                f"{current_user['id']}_"
-                f"{timestamp}_"
-                f"{secure_filename(resume_file.filename)}"
-            )
-
-            resume_path = save_file(
-
-                resume_file,
-
-                RESUME_FOLDER,
-
-                filename
+           result = cloudinary.uploader.upload(
+               resume_file,
+               resource_type="auto",
+               folder="job_application/resumes",
+               format="pdf"
+           )
+           resume_path = result.get(
+                "secure_url"
             )
 
         # =====================================================
         # CHECK EXISTING APPLICATION
-        # SAME USER + SAME JOB CODE
         # =====================================================
 
         existing_query = (
@@ -567,7 +526,7 @@ def submit_application():
         )
 
         # =====================================================
-        # DATES
+        # CURRENT TIME
         # =====================================================
 
         now_time = (
@@ -583,8 +542,6 @@ def submit_application():
 
         document = {
 
-            # USER
-
             "user_id":
                 current_user["id"],
 
@@ -594,12 +551,8 @@ def submit_application():
             "group":
                 current_user["group"],
 
-            # JOB
-
             "job_code":
                 job_code,
-
-            # PERSONAL
 
             "first_name":
                 field(
@@ -619,8 +572,6 @@ def submit_application():
                     dob_audio
                 ),
 
-            # ACADEMIC
-
             "tenth_mark":
                 field(
                     tenth_mark,
@@ -632,8 +583,6 @@ def submit_application():
                     twelfth_mark,
                     twelfth_mark_audio
                 ),
-
-            # UG
 
             "ug_cgpa":
                 field(
@@ -658,8 +607,6 @@ def submit_application():
                     ug_project_about,
                     ug_project_about_audio
                 ),
-
-            # PG
 
             "has_pg":
                 has_pg,
@@ -688,8 +635,6 @@ def submit_application():
                     pg_project_about_audio
                 ),
 
-            # FINAL
-
             "about_yourself":
                 field(
                     about_yourself,
@@ -702,19 +647,15 @@ def submit_application():
                     comfortable_technology_audio
                 ),
 
-            # RESUME
-
             "resume_path":
                 resume_path,
-
-            # UPDATED TIME
 
             "updated_at":
                 now_time
         }
 
         # =====================================================
-        # UPDATE EXISTING APPLICATION
+        # UPDATE EXISTING
         # =====================================================
 
         if existing_docs:
@@ -722,8 +663,6 @@ def submit_application():
             existing_doc = existing_docs[0]
 
             old_data = existing_doc.to_dict()
-
-            # KEEP OLD CREATED TIME
 
             document["created_at"] = (
 
@@ -733,11 +672,10 @@ def submit_application():
                 )
             )
 
-            # KEEP OLD RESUME IF NEW NOT UPLOADED
-
             if not resume_path:
 
                 document["resume_path"] = (
+
                     old_data.get(
                         "resume_path"
                     )
@@ -758,7 +696,7 @@ def submit_application():
             })
 
         # =====================================================
-        # CREATE NEW APPLICATION
+        # CREATE NEW
         # =====================================================
 
         else:
@@ -793,8 +731,6 @@ def submit_application():
             "message":
                 str(e)
         }), 500
-
-
 # =========================================================
 # GET APPLICATIONS
 # ADMIN ONLY
@@ -804,8 +740,10 @@ def submit_application():
     "/applications",
     methods=["GET"]
 )
+
 @token_required
 @admin_required
+
 def get_applications():
 
     try:
@@ -849,39 +787,121 @@ def get_applications():
             "message":
                 str(e)
         }), 500
+    
 
-# =========================================================
-# AUDIO API
-# =========================================================
-
-@app.route(
-    "/audio/<filename>"
-)
-@token_required
-def get_audio(filename):
-
-    return send_from_directory(
-
-        AUDIO_FOLDER,
-        filename
-    )
-
-# =========================================================
-# RESUME API
+    # =========================================================
+# MY APPLICATIONS
+# USER SAFE API
 # =========================================================
 
 @app.route(
-    "/resume/<filename>"
+    "/my-applications",
+    methods=["GET"]
 )
+
 @token_required
-@admin_required
-def get_resume(filename):
 
-    return send_from_directory(
+def my_applications():
 
-        RESUME_FOLDER,
-        filename
-    )
+    try:
+
+        current_user = request.user
+
+        docs = (
+
+            db.collection("applications")
+
+            .where(
+                "user_id",
+                "==",
+                current_user["id"]
+            )
+
+            .stream()
+        )
+
+        applications = []
+
+        for doc in docs:
+
+            data = doc.to_dict()
+
+            data["id"] = doc.id
+
+            # =========================================
+            # REMOVE RESUME
+            # =========================================
+
+            data.pop(
+                "resume_path",
+                None
+            )
+
+            # =========================================
+            # REMOVE AUDIOS
+            # =========================================
+
+            fields = [
+
+                "first_name",
+                "last_name",
+                "dob",
+                "tenth_mark",
+                "twelfth_mark",
+                "ug_cgpa",
+                "ug_project_name",
+                "ug_project_domain",
+                "ug_project_about",
+                "pg_cgpa",
+                "pg_project_name",
+                "pg_project_domain",
+                "pg_project_about",
+                "about_yourself",
+                "comfortable_technology"
+            ]
+
+            for field_name in fields:
+
+                if (
+
+                    field_name in data and
+
+                    isinstance(
+                        data[field_name],
+                        dict
+                    )
+
+                ):
+
+                    data[field_name].pop(
+                        "audio",
+                        None
+                    )
+
+            applications.append(data)
+
+        return jsonify({
+
+            "success": True,
+
+            "data":
+                applications
+        })
+
+    except Exception as e:
+
+        print(
+            "MY APPLICATIONS ERROR:",
+            e
+        )
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                str(e)
+        }), 500
 
 # =========================================================
 # MAIN

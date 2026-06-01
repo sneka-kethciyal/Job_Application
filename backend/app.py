@@ -55,8 +55,11 @@ from routes.auth_routes import (
 # =========================================================
 
 app = Flask(__name__)
-
-CORS(app)
+CORS(app, origins=[
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://job-frontend-849912006935.asia-south1.run.app"
+])
 
 # =========================================================
 # FIREBASE SETUP
@@ -909,19 +912,12 @@ def my_applications():
 
 if __name__ == "__main__":
 
-    print(
-        "[START] Flask Server Running"
-    )
+    print("[START] Flask Server Running")
 
-    print(
-        "http://127.0.0.1:5000"
-    )
+    port = int(os.environ.get("PORT", 8080))
 
     app.run(
-
-        debug=True,
-
+        debug=False,
         host="0.0.0.0",
-
-        port=5000
+        port=port
     )
